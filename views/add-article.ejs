@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= pageTitle %></title>
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/form.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="/">article</a></li>
+          <li><a href="/admin/add-article">Add Article</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <form class="form" action="/admin/add-article" method="POST">
+        <input class="title" type="text" name="title" id="title" />
+        <!-- <textarea
+          class="mainArticle"
+          name="article"
+          id="article"
+          cols="30"
+          rows="10"
+        ></textarea> -->
+        <button type="submit">Add article</button>
+      </form>
+    </main>
+  </body>
+</html>
