@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Article</title>
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/form.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="/">article</a></li>
+          <li>
+            <a href="/admin/add-article">Add Article</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <h1><%=article.title%></h1>
+      <h3><%=article.author%></h3>
+      <h4><%=article.date%></h4>
+      <p><%=article.description%></p>
+    </main>
+  </body>
+</html>

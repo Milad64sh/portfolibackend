@@ -8,7 +8,11 @@ exports.getAddArticle = (req, res, next) => {
 };
 
 exports.postAddArticle = (req, res, next) => {
-  const article = new Article(req.body.title, req.body.content);
+  const title = req.body.title;
+  const author = req.body.author;
+  const description = req.body.description;
+
+  const article = new Article(title, author, description);
   article.save();
   res.redirect('/');
 };
@@ -18,8 +22,18 @@ exports.getArticles = (req, res, next) => {
     res.render('article', {
       pageTitle: 'article',
       articles: articles,
-      path: '/',
-      hasArticles: articles.length > 0,
+      path: '/articles',
+    });
+  });
+};
+
+exports.getArticle = (req, res, next) => {
+  const articleId = req.params.articleId;
+  Article.findById(articleId, (article) => {
+    res.render('article-detail', {
+      article: article,
+      pageTitle: article.title,
+      path: '/articles',
     });
   });
 };

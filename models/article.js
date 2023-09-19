@@ -1,4 +1,3 @@
-const { fileLoader } = require('ejs');
 const fs = require('fs');
 const path = require('path');
 
@@ -24,10 +23,14 @@ const getArticlesFromFile = (cb) => {
 };
 
 module.exports = class Article {
-  constructor(t) {
-    this.title = t;
+  constructor(title, description, author, date) {
+    this.title = title;
+    this.description = description;
+    this.author = author;
+    this.date = date;
   }
   save() {
+    this.id = Math.random().toString();
     getArticlesFromFile((articles) => {
       articles.push(this);
       fs.writeFile(p, JSON.stringify(articles), (err) => {
@@ -38,5 +41,11 @@ module.exports = class Article {
 
   static fetchAll(cb) {
     getArticlesFromFile(cb);
+  }
+  static findById(id, cb) {
+    getArticlesFromFile((articles) => {
+      const article = articles.find((article) => article.id === id);
+      cb(article);
+    });
   }
 };

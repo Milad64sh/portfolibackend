@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Article</title>
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/form.css" />
   </head>
   <body>
     <header>
@@ -18,10 +20,17 @@
     </header>
     <main>
       <%if (articles.length > 0) {%>
-      <div>
+      <div class="singleArticle">
         <% for(let article of articles) { %>
         <h1><%= article.title %></h1>
-        <p><%= article.content %></p>
+        <p><%= article.description %></p>
+        <div class="btnForm">
+          <a class="btn" href="/admin/edit-article">Edit</a>
+          <a class="btn" href="/articles/<%= article.id %>">Details</a>
+          <form class="btnForm" action="/admin/delete-article" method="post">
+            <button class="btn" type="submit">Delete</button>
+          </form>
+        </div>
         <% } %>
       </div>
       <% } %>
