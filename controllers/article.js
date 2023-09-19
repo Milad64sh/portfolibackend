@@ -9,10 +9,11 @@ exports.getAddArticle = (req, res, next) => {
 
 exports.postAddArticle = (req, res, next) => {
   const title = req.body.title;
-  const author = req.body.author;
   const description = req.body.description;
+  const author = req.body.author;
+  const date = req.body.date;
 
-  const article = new Article(title, author, description);
+  const article = new Article(title, description, author, date);
   article.save();
   res.redirect('/');
 };
