@@ -8,5 +8,6 @@ router.get('/add-article', articleController.getAddArticle);
 
 // POST req
 router.post('/add-article', articleController.postAddArticle);
+router.get('/edit-article/:articleId', articleController.getEditArticle);
 
 module.exports = router;
