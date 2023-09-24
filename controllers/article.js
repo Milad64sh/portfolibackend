@@ -73,3 +73,9 @@ exports.getArticle = (req, res, next) => {
     });
   });
 };
+
+exports.postDeleteArticle = (req, res, next) => {
+  const artId = req.body.articleId;
+  Article.deleteById(artId);
+  res.redirect('/');
+};

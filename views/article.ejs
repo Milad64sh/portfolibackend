@@ -30,6 +30,7 @@
           >
           <a class="btn" href="/articles/<%= article.id %>">Details</a>
           <form class="btnForm" action="/admin/delete-article" method="post">
+            <input type="hidden" value="<%= article.id %>" name="articleId" />
             <button class="btn" type="submit">Delete</button>
           </form>
         </div>

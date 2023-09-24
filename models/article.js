@@ -51,6 +51,15 @@ module.exports = class Article {
     });
   }
 
+  static deleteById(id) {
+    getArticlesFromFile((articles) => {
+      const updatedArticles = articles.filter((article) => article.id !== id);
+      fs.writeFile(p, JSON.stringify(updatedArticles), (err) => {
+        console.log(err);
+      });
+    });
+  }
+
   static fetchAll(cb) {
     getArticlesFromFile(cb);
   }
