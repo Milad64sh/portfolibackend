@@ -26,12 +26,29 @@ exports.getEditArticle = (req, res, next) => {
   });
 };
 
+exports.postEditArticle = (req, res, next) => {
+  const artId = req.body.articleId;
+  const updatedTitle = req.body.title;
+  const updatedDesc = req.body.description;
+  const updatedAuthor = req.body.author;
+  const updatedDate = req.body.date;
+  const updatedArticle = new Article(
+    artId,
+    updatedTitle,
+    updatedDesc,
+    updatedAuthor,
+    updatedDate
+  );
+  updatedArticle.save();
+  res.redirect('/');
+};
+
 exports.postAddArticle = (req, res, next) => {
   const title = req.body.title;
   const description = req.body.description;
   const author = req.body.author;
   const date = req.body.date;
-  const article = new Article(title, description, author, date);
+  const article = new Article(null, title, description, author, date);
   article.save();
   res.redirect('/');
 };

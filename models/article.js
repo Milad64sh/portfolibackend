@@ -23,19 +23,31 @@ const getArticlesFromFile = (cb) => {
 };
 
 module.exports = class Article {
-  constructor(title, description, author, date) {
+  constructor(id, title, description, author, date) {
+    this.id = id;
     this.title = title;
     this.description = description;
     this.author = author;
     this.date = date;
   }
   save() {
-    this.id = Math.random().toString();
     getArticlesFromFile((articles) => {
-      articles.push(this);
-      fs.writeFile(p, JSON.stringify(articles), (err) => {
-        console.log(err);
-      });
+      if (this.id) {
+        const existingArticleIndex = articles.findIndex(
+          (article) => article.id === this.id
+        );
+        const updatedArticles = [...articles];
+        updatedArticles[existingArticleIndex] = this;
+        fs.writeFile(p, JSON.stringify(updatedArticles), (err) => {
+          console.log(err);
+        });
+      } else {
+        this.id = Math.random().toString();
+        articles.push(this);
+        fs.writeFile(p, JSON.stringify(articles), (err) => {
+          console.log(err);
+        });
+      }
     });
   }
 

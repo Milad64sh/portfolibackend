@@ -25,7 +25,9 @@
         <h1><%= article.title %></h1>
         <p><%= article.description %></p>
         <div class="btnForm">
-          <a class="btn" href="/admin/edit-article">Edit</a>
+          <a class="btn" href="/admin/edit-article/<%= article.id%>?edit=true"
+            >Edit</a
+          >
           <a class="btn" href="/articles/<%= article.id %>">Details</a>
           <form class="btnForm" action="/admin/delete-article" method="post">
             <button class="btn" type="submit">Delete</button>

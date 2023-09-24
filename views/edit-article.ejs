@@ -19,7 +19,7 @@
     <main>
       <form
         class="form"
-        action="/admin/<% if (editing) { %> edit-article <% } else { %> add-article <% } %> "
+        action="/admin/<% if (editing) { %>edit-article<% } else { %>add-article<% } %>"
         method="POST"
       >
         <div class="formItem">
@@ -55,6 +55,9 @@
             value="<% if (editing) { %><%= article.date %><% }%>"
           />
         </div>
+        <% if (editing) { %>
+        <input type="hidden" value="<%= article.id %>" name="articleId" />
+        <% } %>
         <button class="btn" type="submit">
           <% if(editing) { %> Update Article <% } else {%> Add Article <% } %>
         </button>

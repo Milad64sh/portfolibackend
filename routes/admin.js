@@ -10,4 +10,6 @@ router.get('/add-article', articleController.getAddArticle);
 router.post('/add-article', articleController.postAddArticle);
 router.get('/edit-article/:articleId', articleController.getEditArticle);
 
+router.post('/edit-article', articleController.postEditArticle);
+
 module.exports = router;
