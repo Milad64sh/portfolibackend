@@ -1,26 +1,4 @@
-const fs = require('fs');
-const path = require('path');
-
-const p = path.join(
-  path.dirname(require.main.filename),
-  'data',
-  'article.json'
-);
-
-const getArticlesFromFile = (cb) => {
-  const p = path.join(
-    path.dirname(require.main.filename),
-    'data',
-    'article.json'
-  );
-  fs.readFile(p, (err, fileContent) => {
-    if (err) {
-      cb([]);
-    } else {
-      cb(JSON.parse(fileContent));
-    }
-  });
-};
+const db = require('../util/database');
 
 module.exports = class Article {
   constructor(id, title, description, author, date) {
@@ -31,42 +9,16 @@ module.exports = class Article {
     this.date = date;
   }
   save() {
-    getArticlesFromFile((articles) => {
-      if (this.id) {
-        const existingArticleIndex = articles.findIndex(
-          (article) => article.id === this.id
-        );
-        const updatedArticles = [...articles];
-        updatedArticles[existingArticleIndex] = this;
-        fs.writeFile(p, JSON.stringify(updatedArticles), (err) => {
-          console.log(err);
-        });
-      } else {
-        this.id = Math.random().toString();
-        articles.push(this);
-        fs.writeFile(p, JSON.stringify(articles), (err) => {
-          console.log(err);
-        });
-      }
-    });
+    return db.execute(
+      'INSERT INTO articles (title, description, author, date) VALUES (?, ?, ?)',
+      [this.title, this.description, this.author, this.date]
+    );
   }
 
-  static deleteById(id) {
-    getArticlesFromFile((articles) => {
-      const updatedArticles = articles.filter((article) => article.id !== id);
-      fs.writeFile(p, JSON.stringify(updatedArticles), (err) => {
-        console.log(err);
-      });
-    });
-  }
+  static deleteById(id) {}
 
-  static fetchAll(cb) {
-    getArticlesFromFile(cb);
+  static fetchAll() {
+    return db.execute('SELECT * FROM articles');
   }
-  static findById(id, cb) {
-    getArticlesFromFile((articles) => {
-      const article = articles.find((article) => article.id === id);
-      cb(article);
-    });
-  }
+  static findById(id) {}
 };

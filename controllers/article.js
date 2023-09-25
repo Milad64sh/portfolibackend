@@ -7,6 +7,21 @@ exports.getAddArticle = (req, res, next) => {
     editing: false,
   });
 };
+exports.postAddArticle = (req, res, next) => {
+  const title = req.body.title;
+  const description = req.body.description;
+  const author = req.body.author;
+  const date = req.body.date;
+  const article = new Article(null, title, description, author, date);
+  article
+    .save()
+    .then(() => {
+      res.redirect('/');
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 exports.getEditArticle = (req, res, next) => {
   const editMode = req.query.edit;
   if (!editMode) {
@@ -43,24 +58,18 @@ exports.postEditArticle = (req, res, next) => {
   res.redirect('/');
 };
 
-exports.postAddArticle = (req, res, next) => {
-  const title = req.body.title;
-  const description = req.body.description;
-  const author = req.body.author;
-  const date = req.body.date;
-  const article = new Article(null, title, description, author, date);
-  article.save();
-  res.redirect('/');
-};
-
 exports.getArticles = (req, res, next) => {
-  Article.fetchAll((articles) => {
-    res.render('article', {
-      pageTitle: 'article',
-      articles: articles,
-      path: '/articles',
+  Article.fetchAll()
+    .then(([rows, fieldData]) => {
+      res.render('article', {
+        pageTitle: 'article',
+        articles: rows,
+        path: '/articles',
+      });
+    })
+    .catch((err) => {
+      console.log(err);
     });
-  });
 };
 
 exports.getArticle = (req, res, next) => {
