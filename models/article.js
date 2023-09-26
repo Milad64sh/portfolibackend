@@ -1,24 +1,27 @@
-const db = require('../util/database');
+const { Sequelize, DataTypes } = require('sequelize');
 
-module.exports = class Article {
-  constructor(id, title, description, author, date) {
-    this.id = id;
-    this.title = title;
-    this.description = description;
-    this.author = author;
-    this.date = date;
-  }
-  save() {
-    return db.execute(
-      'INSERT INTO articles (title, description, author, date) VALUES (?, ?, ?, ?)',
-      [this.title, this.description, this.author, this.date]
-    );
-  }
+const sequelize = require('../util/database');
 
-  static deleteById(id) {}
+const Article = sequelize.define('article', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true,
+  },
+  title: DataTypes.STRING,
+  description: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  author: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  date: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+});
 
-  static fetchAll() {
-    return db.execute('SELECT * FROM articles');
-  }
-  static findById(id) {}
-};
+module.exports = Article;

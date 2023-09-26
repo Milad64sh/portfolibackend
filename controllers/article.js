@@ -12,33 +12,38 @@ exports.postAddArticle = (req, res, next) => {
   const description = req.body.description;
   const author = req.body.author;
   const date = req.body.date;
-  const article = new Article(null, title, description, author, date);
-  article
-    .save()
-    .then(() => {
+  req.user
+    .createArticle({
+      title: title,
+      description: description,
+      author: author,
+      date: date,
+    })
+    .then((result) => {
       res.redirect('/');
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => console.log(err));
 };
+
 exports.getEditArticle = (req, res, next) => {
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect('/');
   }
   const artId = req.params.articleId;
-  Article.findById(artId, (article) => {
-    if (!article) {
-      return res.redirect('/');
-    }
-    res.render('edit-article', {
-      pageTitle: 'Edit Article',
-      path: '/admin/edit-article',
-      editing: editMode,
-      article: article,
-    });
-  });
+  Article.findByPk(artId)
+    .then((article) => {
+      if (!article) {
+        return res.redirect('/');
+      }
+      res.render('edit-article', {
+        pageTitle: 'Edit Article',
+        path: '/admin/edit-article',
+        editing: editMode,
+        article: article,
+      });
+    })
+    .catch((err) => console.log(err));
 };
 
 exports.postEditArticle = (req, res, next) => {
@@ -47,44 +52,56 @@ exports.postEditArticle = (req, res, next) => {
   const updatedDesc = req.body.description;
   const updatedAuthor = req.body.author;
   const updatedDate = req.body.date;
-  const updatedArticle = new Article(
-    artId,
-    updatedTitle,
-    updatedDesc,
-    updatedAuthor,
-    updatedDate
-  );
-  updatedArticle.save();
-  res.redirect('/');
+  Article.findByPk(artId)
+    .then((article) => {
+      article.title = updatedTitle;
+      article.description = updatedDesc;
+      article.author = updatedAuthor;
+      article.date = updatedDate;
+      return article.save();
+    })
+    .then((result) => {
+      res.redirect('/');
+      console.log('UPDATED ARTICLE');
+    })
+    .catch((err) => console.log(err));
 };
 
 exports.getArticles = (req, res, next) => {
-  Article.fetchAll()
-    .then(([rows, fieldData]) => {
+  req.user
+    .getArticles()
+    .then((articles) => {
       res.render('article', {
         pageTitle: 'article',
-        articles: rows,
+        articles: articles,
         path: '/articles',
       });
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => console.log(err));
 };
 
 exports.getArticle = (req, res, next) => {
   const articleId = req.params.articleId;
-  Article.findById(articleId, (article) => {
-    res.render('article-detail', {
-      article: article,
-      pageTitle: article.title,
-      path: '/articles',
-    });
-  });
+  Article.findByPk(articleId)
+    .then((article) => {
+      res.render('article-detail', {
+        article: article,
+        pageTitle: article.title,
+        path: '/articles',
+      });
+    })
+    .catch((err) => console.log(err));
 };
 
 exports.postDeleteArticle = (req, res, next) => {
   const artId = req.body.articleId;
-  Article.deleteById(artId);
-  res.redirect('/');
+  Article.findByPk(artId)
+    .then((article) => {
+      return article.destroy();
+    })
+    .then((result) => {
+      console.log(result);
+      res.redirect('/');
+    })
+    .catch((err) => console.log(err));
 };
