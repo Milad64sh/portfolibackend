@@ -46,7 +46,7 @@
             value="<% if (editing) { %><%= article.author %><% }%>"
           />
         </div>
-        <!-- <div class="formItem">
+        <div class="formItem">
           <label for="date">Date</label>
           <input
             type="date"
@@ -54,7 +54,7 @@
             id="date"
             value="<% if (editing) { %><%= article.date %><% }%>"
           />
-        </div> -->
+        </div>
         <% if (editing) { %>
         <input type="hidden" value="<%= article.id %>" name="articleId" />
         <% } %>

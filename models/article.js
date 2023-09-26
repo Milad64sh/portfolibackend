@@ -10,7 +10,7 @@ module.exports = class Article {
   }
   save() {
     return db.execute(
-      'INSERT INTO articles (title, description, author, date) VALUES (?, ?, ?)',
+      'INSERT INTO articles (title, description, author, date) VALUES (?, ?, ?, ?)',
       [this.title, this.description, this.author, this.date]
     );
   }
