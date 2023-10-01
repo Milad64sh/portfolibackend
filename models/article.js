@@ -1,27 +1,18 @@
-const { Sequelize, DataTypes } = require('sequelize');
+const getDb = require('../util/database').getDb;
 
-const sequelize = require('../util/database');
-
-const Article = sequelize.define('article', {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    allowNull: false,
-    primaryKey: true,
-  },
-  title: DataTypes.STRING,
-  description: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  author: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  date: {
-    type: DataTypes.DATE,
-    allowNull: false,
-  },
-});
+class Article {
+  constructor(title, author, date) {
+    this.title = title;
+    this.author = author;
+    this.date = date;
+  }
+  save() {
+    const db = getDb();
+    db.collection('articles')
+      .insertOne(this)
+      .then((result) => console.log(result))
+      .catch((err) => console.log(err));
+  }
+}
 
 module.exports = Article;
